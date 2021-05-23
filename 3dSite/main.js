@@ -16,8 +16,7 @@ renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 camera.position.setZ(30);
-//camera.position.setY(30);
-//camera.lookAt(0, 0, 0);
+camera.lookAt(0, 0, 0);
 
 const geometry = new THREE.TorusGeometry(10, 3, 16, 100);
 const material = new THREE.MeshStandardMaterial({ color: 0xFF6347 });
@@ -33,19 +32,36 @@ scene.add(pointLight, ambientLight)
 const lightHelper = new THREE.PointLightHelper(pointLight)
 scene.add(lightHelper);
 
-const gridHelper = new THREE.GridHelper();
-scene.add(gridHelper);
+const gridHelper = new THREE.GridHelper(50, 50);
+//scene.add(gridHelper);
 
+// when scrolling, position changing stuff idk
+torus.position.x = 0;
+torus.position.y = 0;
+torus.position.z = 0;
+
+function scrollMoveCamera() {
+  const t = document.body.getBoundingClientRect().top;
+
+  camera.position.z = -0.05 * t;
+  camera.rotation.y = 0.03 * t;
+
+  renderer.render(scene, camera);
+}
+
+document.body.onscroll = scrollMoveCamera
+
+/*
 function animate() {
   requestAnimationFrame(animate);
 
-  torus.rotation.x += 0.01;
-  torus.rotation.y += 0.005;
-  torus.rotation.z += 0.01;
+  torus.rotation.y += 0.01;
+
 
   renderer.render(scene, camera);
 }
 animate()
+// */
 
 
 
